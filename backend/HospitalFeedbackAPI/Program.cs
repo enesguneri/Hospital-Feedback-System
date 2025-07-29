@@ -14,15 +14,12 @@ namespace HospitalFeedbackAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // 1. Servisleri ekle (Dependency Injection için)
             builder.Services.AddControllers();
 
-            // 2. Oracle veritabaný baðlantýsýný yapýlandýr
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseOracle(connectionString));
 
-            // 3. Swagger (API dokümantasyonu)
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
@@ -58,7 +55,6 @@ namespace HospitalFeedbackAPI
                 });
             });
 
-            // 4. CORS ayarý (isteðe baðlý: mobil uygulama eriþecekse gerekli)
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -87,7 +83,7 @@ namespace HospitalFeedbackAPI
                     ValidIssuer = issuer,
                     ValidAudience = audience,
                     IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(key)),
-                    ClockSkew = TimeSpan.Zero // Zaman farkýný sýfýrla
+                    ClockSkew = TimeSpan.Zero
 
                 };
             });
@@ -99,28 +95,20 @@ namespace HospitalFeedbackAPI
             using(var scope = app.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                createAdminUser(context); // Admin kullanýcýsýný oluþtur
+                createAdminUser(context);
             }
 
-            // 6. CORS'u etkinleþtir
             app.UseCors("AllowAll");
 
-            // 7. HTTPS yönlendirmesi
             app.UseHttpsRedirection();
-
-            // 8. Yetkilendirme katmaný (þimdilik aktif deðil, ama burada dursun)
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // 9. Controller'larý eþleþtir
             app.MapControllers();
-
-            // 5. Ortam: Geliþtirme ortamýndaysan Swagger ve Hata Sayfasýný aç
 
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            // 10. Uygulamayý baþlat
             app.Run();
         }
 

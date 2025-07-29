@@ -109,6 +109,7 @@ namespace HospitalFeedbackAPI.Controllers
             feedback.Score = request.Score;
             feedback.Comment = request.Comment;
             feedback.CreatedAt = request.CreatedAt;
+
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -135,6 +136,7 @@ namespace HospitalFeedbackAPI.Controllers
         {
             var email = User.FindFirst(ClaimTypes.Email)?.Value;
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
             if (user == null) return Unauthorized();
 
             var feedbacks = await _context.DoctorFeedbacks
