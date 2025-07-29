@@ -1,0 +1,144 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using HospitalFeedbackAPI.Data;
+using HospitalFeedbackAPI.Models;
+using Microsoft.OpenApi.Models;
+using HospitalFeedbackAPI.Helpers;
+
+namespace HospitalFeedbackAPI
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // 1. Servisleri ekle (Dependency Injection için)
+            builder.Services.AddControllers();
+
+            // 2. Oracle veritabaný baðlantýsýný yapýlandýr
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseOracle(connectionString));
+
+            // 3. Swagger (API dokümantasyonu)
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "HospitalFeedbackAPI",
+                    Version = "v1"
+                });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+
+                });
+            });
+
+            // 4. CORS ayarý (isteðe baðlý: mobil uygulama eriþecekse gerekli)
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder => builder.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod());
+            });
+
+            var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+            var key = jwtSettings.GetValue<string>("Key");
+            var issuer = jwtSettings.GetValue<string>("Issuer");
+            var audience = jwtSettings.GetValue<string>("Audience");
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(key)),
+                    ClockSkew = TimeSpan.Zero // Zaman farkýný sýfýrla
+
+                };
+            });
+            builder.Services.AddAuthorization();
+
+
+            var app = builder.Build();
+
+            using(var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                createAdminUser(context); // Admin kullanýcýsýný oluþtur
+            }
+
+            // 6. CORS'u etkinleþtir
+            app.UseCors("AllowAll");
+
+            // 7. HTTPS yönlendirmesi
+            app.UseHttpsRedirection();
+
+            // 8. Yetkilendirme katmaný (þimdilik aktif deðil, ama burada dursun)
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            // 9. Controller'larý eþleþtir
+            app.MapControllers();
+
+            // 5. Ortam: Geliþtirme ortamýndaysan Swagger ve Hata Sayfasýný aç
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
+            // 10. Uygulamayý baþlat
+            app.Run();
+        }
+
+        private static void createAdminUser(AppDbContext context)
+        {
+            var appAdmin = context.Users.FirstOrDefault(u => u.Role == "Admin");
+            if (appAdmin != null)
+                return;
+            var adminUser = new User
+            {
+                Id = 0, // Id will be generated by the database
+                FullName = "System Admin",
+                Email = "admin",
+                Password = PasswordHasher.HashPassword("admin12"),
+                Role = "Admin"
+            };
+            context.Users.Add(adminUser);
+            context.SaveChanges();
+        }
+    }
+}

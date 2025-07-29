@@ -1,0 +1,18 @@
+# Build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# AppSettings
+appsettings*.json
+
+# Launch settings
+Properties/launchSettings.json
+
+# HTTP test
+*.http
+
