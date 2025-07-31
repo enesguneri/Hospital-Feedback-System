@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Colors -->
+    <color name="primary_blue">#2563EB</color>
+    <color name="primary_blue_dark">#1D4ED8</color>
+    <color name="primary_blue_light">#3B82F6</color>
+
+    <!-- Background Colors -->
+    <color name="background_start">#EBF8FF</color>
+    <color name="background_end">#E0E7FF</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#6B7280</color>
+
+    <!-- Other Colors -->
+    <color name="gray_400">#9CA3AF</color>
+    <color name="gray_600">#4B5563</color>
+
+    <!-- Input Colors -->
+    <color name="input_stroke">#D1D5DB</color>
+    <color name="input_stroke_focused">#2563EB</color>
+</resources>

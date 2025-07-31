@@ -176,10 +176,13 @@ namespace HospitalFeedbackAPI.Controllers
         // PUT: api/User/5
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, User user)
+        public async Task<IActionResult> UpdateUser(int id, UserDto dto)
         {
-            if (id != user.Id)
-                return BadRequest();
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
             if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
             {
                 return BadRequest("Email ve şifre zorunludur.");
@@ -189,7 +192,12 @@ namespace HospitalFeedbackAPI.Controllers
                 return BadRequest("Bu email zaten kayıtlı.");
             }
 
-            user.Password = PasswordHasher.HashPassword(user.Password);
+
+            //güncelleme işlemi için gerekli atamalar yapılacak.
+            user.FullName = dto.FullName;
+            user.Email = dto.Email;
+            user.Role = dto.Role;
+
 
             _context.Entry(user).State = EntityState.Modified;
 
@@ -205,7 +213,13 @@ namespace HospitalFeedbackAPI.Controllers
                     throw;
             }
 
-            return NoContent();
+            return Ok(new UserDto
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = user.Role
+            });
         }
 
         // DELETE: api/User/5

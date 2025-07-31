@@ -24,7 +24,7 @@ namespace HospitalFeedbackAPI.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("login")]
+        [HttpPost]
         [AllowAnonymous]
         public IActionResult Login(UserLoginRequest request)
         {
