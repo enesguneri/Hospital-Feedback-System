@@ -84,7 +84,6 @@ namespace HospitalFeedbackAPI
                     ValidAudience = audience,
                     IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(key)),
                     ClockSkew = TimeSpan.Zero
-
                 };
             });
             builder.Services.AddAuthorization();

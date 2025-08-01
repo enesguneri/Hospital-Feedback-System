@@ -9,11 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.enes.hospitalfeedbacksystem.databinding.FragmentLoginBinding
 import com.enes.hospitalfeedbacksystem.service.APIClient
 import com.enes.hospitalfeedbacksystem.util.TokenManager
 import com.enes.hospitalfeedbacksystem.viewmodel.LoginViewModel
 import kotlinx.coroutines.launch
+import androidx.navigation.findNavController
 
 
 class LoginFragment : Fragment() {
@@ -39,24 +41,39 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
             viewModel.login(email, password)
-            viewModel.loginResult.observe(viewLifecycleOwner, Observer { response ->
-                TokenManager.saveToken(requireContext(), response.token)
-            })
-
-            viewModel.error.observe(viewLifecycleOwner, Observer { errorMsg ->
-                Toast.makeText(requireContext(), "Hata: $errorMsg", Toast.LENGTH_LONG).show()
-            })
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                getCurrentUserInfo()
-            }
         }
 
+        viewModel.loginResult.observe(viewLifecycleOwner, Observer { response ->
+            if (response.token.isNotBlank()) {
+                TokenManager.saveToken(requireContext(), response.token)
+                lifecycleScope.launch {
+                    getCurrentUserInfo()
+                }
+            } else {
+                Toast.makeText(requireContext(), "Giriş başarılı ama token alınamadı.", Toast.LENGTH_SHORT).show()
+            }
+        })
 
+
+        viewModel.error.observe(viewLifecycleOwner, Observer { errorMsg ->
+            Toast.makeText(requireContext(), "Hata: $errorMsg", Toast.LENGTH_LONG).show()
+        })
+
+
+        binding.forgotPasswordText.setOnClickListener {
+            //update düzenlenecek.
+        }
+
+        binding.registerText.setOnClickListener {
+            val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+            it.findNavController().navigate(action)
+        }
 
 
     }

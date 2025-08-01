@@ -11,11 +11,13 @@ object APIClient {
     private val BASE_URL = "http://10.0.2.2:5077/"
 
     val noAuthApiService : APIService by lazy {
+        //Login işlemiyle token almak için
         Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
             .build().create(APIService::class.java)
     }
 
     fun getAuthApiService(context: Context): APIService {
+        //Token alındıktan sonra yetki gerektiren istekler için
         val client = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(context))
             .build()

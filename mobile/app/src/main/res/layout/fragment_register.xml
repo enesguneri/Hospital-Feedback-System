@@ -43,7 +43,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:text="Hastane Geri Bildirim Sistemi"
+            android:text="Hastane Geribildirim Sistemi"
             android:textColor="@color/text_primary"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -51,11 +51,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/logoContainer" />
 
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:text="Yeni hesap oluşturun"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appTitle" />
 
-
-        <!-- Login Card -->
+        <!-- Register Card -->
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/loginCard"
+            android:id="@+id/registerCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -66,7 +80,7 @@
             app:cardElevation="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appTitle">
+            app:layout_constraintTop_toBottomOf="@id/subtitle">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,12 +88,12 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <!-- Login Header -->
+                <!-- Register Header -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Giriş Yap"
+                    android:text="Kayıt Ol"
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -90,9 +104,66 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="24dp"
                     android:gravity="center"
-                    android:text="Email adresiniz ve şifrenizle giriş yapın"
+                    android:text="Bilgilerinizi girerek hesap oluşturun"
                     android:textColor="@color/text_secondary"
                     android:textSize="14sp" />
+
+                <!-- Name and Surname Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
+
+                    <!-- First Name Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/firstNameInputLayout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:hint="Ad"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_person">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/firstNameEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName|textCapWords"
+                            android:maxLines="1"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:drawableStart="@drawable/ic_person"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Last Name Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lastNameInputLayout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:hint="Soyad"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_person">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/lastNameEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName|textCapWords"
+                            android:maxLines="1"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:drawableStart="@drawable/ic_person"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
 
                 <!-- Email Input -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -140,27 +211,21 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Forgot Password -->
+                <!-- Password Requirements -->
                 <TextView
-                    android:id="@+id/forgotPasswordText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="end"
-                    android:padding="8dp"
-                    android:text="Şifremi Unuttum"
-                    android:textColor="@color/primary_blue"
-                    android:textSize="14sp" />
+                    android:text="• Şifre en az 6 karakter olmalıdır\n• En az bir büyük harf ve bir rakam içermelidir"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
 
-                <!-- Login Button -->
+                <!-- Register Button -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/loginButton"
+                    android:id="@+id/registerButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:text="Giriş Yap"
+                    android:text="Kayıt Ol"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -187,7 +252,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Giriş Yapılıyor..."
+                        android:text="Kayıt Yapılıyor..."
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -202,7 +267,7 @@
                     android:layout_marginBottom="16dp"
                     android:background="@color/separator_color" />
 
-                <!-- Register Section -->
+                <!-- Login Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -212,19 +277,19 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hesabın yok mu? "
+                        android:text="Zaten hesabın var mı? "
                         android:textColor="@color/text_secondary"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/registerText"
+                        android:id="@+id/loginText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
                         android:padding="4dp"
-                        android:text="Kayıt Ol"
+                        android:text="Giriş Yap"
                         android:textColor="@color/primary_blue"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -248,17 +313,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loginCard"
+            app:layout_constraintTop_toBottomOf="@id/registerCard"
             app:layout_constraintVertical_bias="1.0">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="© 2025 Hastane Geri Bildirim Sistemi"
+                android:text="© 2025 Hastane Geribildirim Sistemi"
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
-
-
 
         </LinearLayout>
 

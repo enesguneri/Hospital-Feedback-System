@@ -19,6 +19,7 @@
     <!-- Other Colors -->
     <color name="gray_400">#9CA3AF</color>
     <color name="gray_600">#4B5563</color>
+    <color name="separator_color">#F3F4F6</color>
 
     <!-- Input Colors -->
     <color name="input_stroke">#D1D5DB</color>

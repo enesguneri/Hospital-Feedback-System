@@ -1,6 +1,7 @@
 package com.enes.hospitalfeedbacksystem.util
 
 import android.content.Context
+import androidx.core.content.edit
 
 object TokenManager {
     private const val PREF_NAME = "AppPrefs"
@@ -8,7 +9,7 @@ object TokenManager {
 
     fun saveToken(context: Context, token: String) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putString(TOKEN_KEY, token).apply()
+        prefs.edit(commit = true) { putString(TOKEN_KEY, token) }
     }
 
     fun getToken(context: Context): String? {
