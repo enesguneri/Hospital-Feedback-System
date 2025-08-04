@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-
     <!-- Primary Colors -->
     <color name="primary_blue">#2563EB</color>
     <color name="primary_blue_dark">#1D4ED8</color>
@@ -17,6 +14,7 @@
     <color name="text_secondary">#6B7280</color>
 
     <!-- Other Colors -->
+    <color name="white">#FFFFFF</color>
     <color name="gray_400">#9CA3AF</color>
     <color name="gray_600">#4B5563</color>
     <color name="separator_color">#F3F4F6</color>
@@ -24,4 +22,34 @@
     <!-- Input Colors -->
     <color name="input_stroke">#D1D5DB</color>
     <color name="input_stroke_focused">#2563EB</color>
+
+    <!-- Feedback Type Colors -->
+    <color name="hospital_feedback_bg">#EBF8FF</color>
+    <color name="hospital_feedback_icon">#2563EB</color>
+    <color name="doctor_feedback_bg">#F0FDF4</color>
+    <color name="doctor_feedback_icon">#059669</color>
+
+    <!-- Status Colors -->
+    <color name="status_answered_bg">#D1FAE5</color>
+    <color name="status_answered_text">#065F46</color>
+    <color name="status_pending_bg">#FEF3C7</color>
+    <color name="status_pending_text">#92400E</color>
+
+    <!-- Rating Colors -->
+    <color name="rating_star">#F59E0B</color>
+    <color name="rating_star_empty">#D1D5DB</color>
+
+    <!-- Background Colors for Sections -->
+    <color name="answer_bg">#F8FAFC</color>
+    <color name="answer_border">#E2E8F0</color>
+    <color name="comment_bg">#F0FDF4</color>
+    <color name="comment_border">#BBF7D0</color>
+
+    <!-- Additional Status Colors -->
+    <color name="error_red">#F44336</color>
+    <color name="warning_orange">#FF9800</color>
+    <color name="success_green">#4CAF50</color>
+
+    <!-- Input Background -->
+    <color name="input_background">#F9FAFB</color>
 </resources>

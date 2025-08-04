@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import com.enes.hospitalfeedbacksystem.databinding.FragmentLoginBinding
 import com.enes.hospitalfeedbacksystem.service.APIClient
 import com.enes.hospitalfeedbacksystem.util.TokenManager
@@ -55,6 +54,8 @@ class LoginFragment : Fragment() {
                 lifecycleScope.launch {
                     getCurrentUserInfo()
                 }
+                val action = LoginFragmentDirections.actionLoginFragmentToMyFeedbacksFragment()
+                view.findNavController().navigate(action)
             } else {
                 Toast.makeText(requireContext(), "Giriş başarılı ama token alınamadı.", Toast.LENGTH_SHORT).show()
             }

@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_myFeedbacksFragment"
+            app:destination="@id/myFeedbacksFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -22,4 +25,8 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/myFeedbacksFragment"
+        android:name="com.enes.hospitalfeedbacksystem.view.MyFeedbacksFragment"
+        android:label="MyFeedbacksFragment" />
 </navigation>
