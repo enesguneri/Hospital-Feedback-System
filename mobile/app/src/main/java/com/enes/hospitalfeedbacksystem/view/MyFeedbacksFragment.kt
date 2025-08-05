@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.enes.hospitalfeedbacksystem.R
 import com.enes.hospitalfeedbacksystem.databinding.BottomSheetFeedbackMenuBinding
 import com.enes.hospitalfeedbacksystem.databinding.FragmentMyFeedbacksBinding
@@ -37,29 +39,35 @@ class MyFeedbacksFragment : Fragment() {
         binding.emptyStateLayout.visibility = View.VISIBLE
 
         binding.menuButton.setOnClickListener {
-            handleMenuClick()
+            handleMenuClick(view)
         }
 
     }
 
-    private fun handleMenuClick() {
+    private fun handleMenuClick(view: View) {
+        val inflater = LayoutInflater.from(requireContext())
+        val menuBinding = BottomSheetFeedbackMenuBinding.inflate(inflater)
         val bottomSheetDialog = BottomSheetDialog(requireContext())
-        val bottomSheetView = BottomSheetFeedbackMenuBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
-        bottomSheetView.hospitalFeedbackCard.setOnClickListener {
-
-        }
-
-        bottomSheetView.doctorFeedbackCard.setOnClickListener {
-
-        }
-
-        bottomSheetView.cancelButton.setOnClickListener {
+        menuBinding.hospitalFeedbackCard.setOnClickListener {
+            val action = MyFeedbacksFragmentDirections.actionMyFeedbacksFragmentToCreateHospitalFeedbackFragment()
+            view.findNavController().navigate(action)
             bottomSheetDialog.dismiss()
         }
 
-        bottomSheetDialog.setContentView(binding.root)
+        menuBinding.doctorFeedbackCard.setOnClickListener {
+            val action = MyFeedbacksFragmentDirections.actionMyFeedbacksFragmentToCreateDoctorFeedbackFragment()
+            view.findNavController().navigate(action)
+            bottomSheetDialog.dismiss()
+        }
+
+        menuBinding.cancelButton.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.setContentView(menuBinding.root)
         bottomSheetDialog.show()
+
     }
 
     override fun onDestroyView() {

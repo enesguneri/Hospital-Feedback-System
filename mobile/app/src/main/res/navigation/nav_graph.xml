@@ -28,5 +28,28 @@
     <fragment
         android:id="@+id/myFeedbacksFragment"
         android:name="com.enes.hospitalfeedbacksystem.view.MyFeedbacksFragment"
-        android:label="MyFeedbacksFragment" />
+        android:label="MyFeedbacksFragment" >
+        <action
+            android:id="@+id/action_myFeedbacksFragment_to_createHospitalFeedbackFragment"
+            app:destination="@id/createHospitalFeedbackFragment" />
+        <action
+            android:id="@+id/action_myFeedbacksFragment_to_createDoctorFeedbackFragment"
+            app:destination="@id/createDoctorFeedbackFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createHospitalFeedbackFragment"
+        android:name="com.enes.hospitalfeedbacksystem.view.CreateHospitalFeedbackFragment"
+        android:label="CreateHospitalFeedbackFragment" >
+        <action
+            android:id="@+id/action_createHospitalFeedbackFragment_to_myFeedbacksFragment"
+            app:destination="@id/myFeedbacksFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createDoctorFeedbackFragment"
+        android:name="com.enes.hospitalfeedbacksystem.view.CreateDoctorFeedbackFragment"
+        android:label="CreateDoctorFeedbackFragment" >
+        <action
+            android:id="@+id/action_createDoctorFeedbackFragment_to_myFeedbacksFragment"
+            app:destination="@id/myFeedbacksFragment" />
+    </fragment>
 </navigation>

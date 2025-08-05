@@ -2,6 +2,7 @@ package com.enes.hospitalfeedbacksystem.service
 
 import com.enes.hospitalfeedbacksystem.model.DoctorDTO
 import com.enes.hospitalfeedbacksystem.model.DoctorFeedbackDTO
+import com.enes.hospitalfeedbacksystem.model.HospitalFeedbackCreateDTO
 import com.enes.hospitalfeedbacksystem.model.HospitalFeedbackDTO
 import com.enes.hospitalfeedbacksystem.model.LoginRequest
 import com.enes.hospitalfeedbacksystem.model.LoginResponse
@@ -71,7 +72,7 @@ interface APIService {
     suspend fun createDoctorFeedback(@Body feedback: DoctorFeedbackDTO): DoctorFeedbackDTO
 
     @PUT("api/DoctorFeedback/{id}")
-    suspend fun updateDoctorFeedback(@Body feedback: DoctorFeedbackDTO)
+    suspend fun updateDoctorFeedback(@Body id : Int, @Body feedback: DoctorFeedbackDTO)
 
     @GET("api/DoctorFeedback/my-feedback")
     suspend fun getMyDoctorFeedbacks(): List<DoctorFeedbackDTO>
@@ -91,7 +92,7 @@ interface APIService {
 
     //Hospital Feedback Endpoints
     @POST("api/HospitalFeedback")
-    suspend fun createHospitalFeedback(@Body feedback: HospitalFeedbackDTO): HospitalFeedbackDTO
+    suspend fun createHospitalFeedback(@Body feedback: HospitalFeedbackCreateDTO): HospitalFeedbackDTO
 
     @GET("api/HospitalFeedback")
     suspend fun getAllHospitalFeedbacks(): List<HospitalFeedbackDTO>
@@ -103,10 +104,10 @@ interface APIService {
     suspend fun getHospitalFeedbackById(id: Int): HospitalFeedbackDTO
 
     @PUT("api/HospitalFeedback/{id}")
-    suspend fun updateHospitalFeedback(@Body feedback: HospitalFeedbackDTO)
+    suspend fun updateHospitalFeedback(@Body id : Int, @Body feedback: HospitalFeedbackDTO)
 
     @PUT("api/HospitalFeedback/{id}/answer")
-    suspend fun answerHospitalFeedback(@Body feedback: HospitalFeedbackDTO)
+    suspend fun answerHospitalFeedback(@Body id : Int, @Body answer: String)
 
     @DELETE("api/HospitalFeedback/{id}")
     suspend fun deleteHospitalFeedback(id: Int)
