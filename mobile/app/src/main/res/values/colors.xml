@@ -52,4 +52,10 @@
 
     <!-- Input Background -->
     <color name="input_background">#F9FAFB</color>
+
+    <!-- Material Design 3 Colors for Profile -->
+    <color name="surface">#FFFFFF</color>
+    <color name="background">#F8F9FA</color>
+    <color name="outline_variant">#E0E4E7</color>
+    <color name="error">#DC3545</color>
 </resources>

@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Konu Başlığı"
+                    android:text=" "
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -84,10 +84,10 @@
                     android:paddingTop="4dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="4dp"
-                    android:text="Yanıtlandı"
+                    android:text="Yanıt Bekleniyor"
                     android:textColor="@color/status_answered_text"
                     android:textSize="10sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -99,7 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Geribildirim mesaj içeriği burada görünecek..."
+            android:text=" "
             android:textColor="@color/text_primary"
             android:textSize="14sp" />
 
@@ -127,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Hastane yanıt metni burada görünecek..."
+                android:text=" "
                 android:textColor="@color/text_primary"
                 android:textSize="14sp" />
 
@@ -153,17 +153,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="15 Ocak 2025"
+                android:text=" "
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/idText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="#1234"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
 
         </LinearLayout>
 

@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Dr. Mehmet Yılmaz"
+                    android:text=" "
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -85,7 +85,7 @@
                     android:id="@+id/scoreText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4.5"
+                    android:text="5"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -94,53 +94,13 @@
 
         </LinearLayout>
 
-        <!-- Star Rating Display -->
-        <LinearLayout
+        <RatingBar
+            android:id="@+id/doctorRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/star1"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_star_filled"
-                app:tint="@color/rating_star" />
-
-            <ImageView
-                android:id="@+id/star2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_star_filled"
-                app:tint="@color/rating_star" />
-
-            <ImageView
-                android:id="@+id/star3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_star_filled"
-                app:tint="@color/rating_star" />
-
-            <ImageView
-                android:id="@+id/star4"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_star_filled"
-                app:tint="@color/rating_star" />
-
-            <ImageView
-                android:id="@+id/star5"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_empty"
-                app:tint="@color/rating_star_empty" />
-
-        </LinearLayout>
+            android:numStars="5"
+            android:stepSize="1.0"
+            android:rating="0"/>
 
         <!-- Comment Section (Only visible if comment exists) -->
         <LinearLayout
@@ -166,7 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Doktor çok ilgili ve profesyoneldi. Teşekkür ederim."
+                android:text=" "
                 android:textColor="@color/text_primary"
                 android:textSize="14sp" />
 
@@ -192,15 +152,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="15 Ocak 2025"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/doctorIdText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dr ID: 123"
+                android:text=" "
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
 

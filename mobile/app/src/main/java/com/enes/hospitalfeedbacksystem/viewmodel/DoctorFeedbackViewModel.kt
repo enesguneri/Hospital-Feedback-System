@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enes.hospitalfeedbacksystem.model.DoctorFeedbackDTO
 import com.enes.hospitalfeedbacksystem.service.APIClient
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DoctorFeedbackViewModel : ViewModel() {
@@ -37,7 +38,7 @@ class DoctorFeedbackViewModel : ViewModel() {
     }
 
     fun submitFeedback(context: Context, dto: DoctorFeedbackDTO) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val feedback = APIClient.getAuthApiService(context).createDoctorFeedback(dto)
                 submitResult.postValue(feedback)

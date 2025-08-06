@@ -5,19 +5,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.enes.hospitalfeedbacksystem.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.enes.hospitalfeedbacksystem.adapter.FeedbackAdapter
 import com.enes.hospitalfeedbacksystem.databinding.BottomSheetFeedbackMenuBinding
 import com.enes.hospitalfeedbacksystem.databinding.FragmentMyFeedbacksBinding
+import com.enes.hospitalfeedbacksystem.model.FeedbackItem
+import com.enes.hospitalfeedbacksystem.viewmodel.DoctorFeedbackViewModel
+import com.enes.hospitalfeedbacksystem.viewmodel.DoctorViewModel
+import com.enes.hospitalfeedbacksystem.viewmodel.HospitalFeedbackViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 
 
 class MyFeedbacksFragment : Fragment() {
     private var _binding: FragmentMyFeedbacksBinding? = null
     private val binding get() = _binding!!
+
+    private val hospitalFeedbackViewModel: HospitalFeedbackViewModel by viewModels()
+    private val doctorFeedbackViewModel: DoctorFeedbackViewModel by viewModels()
+    private val doctorViewModel: DoctorViewModel by viewModels()
+
+    private val feedbackList = arrayListOf<FeedbackItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +50,36 @@ class MyFeedbacksFragment : Fragment() {
         binding.menuButton.setOnClickListener {
             handleMenuClick(view)
         }
+
+        hospitalFeedbackViewModel.getMyFeedbacks(requireContext())
+        doctorFeedbackViewModel.getMyFeedbacks(requireContext())
+        doctorViewModel.getDoctorList(requireContext())
+
+        hospitalFeedbackViewModel.myFeedbacks.observe(viewLifecycleOwner) { feedbacks ->
+            if (feedbacks.isNotEmpty()) {
+                feedbacks.forEach {
+                    feedbackList.add(FeedbackItem.HospitalFeedback(it))
+                }
+            }
+            doctorFeedbackViewModel.myFeedbacks.observe(viewLifecycleOwner) { feedbacks2 ->
+                if (feedbacks2.isNotEmpty()) {
+                    feedbacks2.forEach {
+                        feedbackList.add(FeedbackItem.DoctorFeedback(it))
+                    }
+                }
+            }
+            if (feedbackList.isNotEmpty()){
+                binding.emptyStateLayout.visibility = View.GONE
+                doctorViewModel.doctorList.observe(viewLifecycleOwner) { doctors ->
+                    binding.emptyStateLayout.visibility = View.GONE
+                    binding.feedbackRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                    binding.feedbackRecyclerView.adapter = FeedbackAdapter(feedbackList, doctors)
+                }
+            }
+        }
+
+
+
 
     }
 

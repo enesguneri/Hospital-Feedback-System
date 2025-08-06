@@ -1,6 +1,7 @@
 package com.enes.hospitalfeedbacksystem.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,17 +38,22 @@ class CreateHospitalFeedbackFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backButton.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-                findNavController().popBackStack()
-            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().popBackStack()
         }
+
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
 
         binding.submitButton.setOnClickListener {
             val subject = binding.subjectEditText.text.toString()
             val message = binding.messageEditText.text.toString()
 
             if (subject.isNotEmpty() && message.isNotEmpty()) {
+                binding.loadingLayout.visibility = View.VISIBLE
+                binding.submitButton.isEnabled = false
                 val feedback = HospitalFeedbackCreateDTO(subject, message)
                 viewModel.submitFeedback(requireContext(), feedback)
             }
@@ -63,20 +69,18 @@ class CreateHospitalFeedbackFragment : Fragment() {
         viewModel.submitResult.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 findNavController().popBackStack()
-            } else {
-                Toast.makeText(requireContext(), "Geri bildirim gönderilemedi.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Geri bildirim gönderildi.", Toast.LENGTH_SHORT).show()
             }
         }
 
         viewModel.errorMessage.observe(viewLifecycleOwner) { errorMsg ->
             if (errorMsg.isNotEmpty()) {
-                Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Geri bildirim gönderilemedi.", Toast.LENGTH_SHORT).show()
+                Log.e("CreateHospitalFeedbackFragment", "Error: $errorMsg")
             }
         }
 
-
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
