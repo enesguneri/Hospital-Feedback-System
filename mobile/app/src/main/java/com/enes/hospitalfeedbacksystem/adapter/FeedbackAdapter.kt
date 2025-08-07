@@ -3,6 +3,7 @@ package com.enes.hospitalfeedbacksystem.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.enes.hospitalfeedbacksystem.databinding.DfRecyclerRowBinding
 import com.enes.hospitalfeedbacksystem.databinding.HfRecyclerRowBinding
@@ -10,8 +11,11 @@ import com.enes.hospitalfeedbacksystem.model.DoctorDTO
 import com.enes.hospitalfeedbacksystem.model.DoctorFeedbackDTO
 import com.enes.hospitalfeedbacksystem.model.FeedbackItem
 import com.enes.hospitalfeedbacksystem.model.HospitalFeedbackDTO
+import com.enes.hospitalfeedbacksystem.view.AdminFragmentDirections
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-class FeedbackAdapter(private val feedbackList: List<FeedbackItem>,private val doctorList: List<DoctorDTO>) :
+class FeedbackAdapter(private val feedbackList: List<FeedbackItem>,private val doctorList: List<DoctorDTO>, private val userRole : String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -30,11 +34,11 @@ class FeedbackAdapter(private val feedbackList: List<FeedbackItem>,private val d
         return when (viewType) {
             TYPE_DOCTOR -> {
                 val binding = DfRecyclerRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                DoctorFeedbackViewHolder(binding,doctorList)
+                DoctorFeedbackViewHolder(binding,doctorList, userRole)
             }
             TYPE_HOSPITAL -> {
                 val binding = HfRecyclerRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                HospitalFeedbackViewHolder(binding)
+                HospitalFeedbackViewHolder(binding, userRole)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -49,18 +53,32 @@ class FeedbackAdapter(private val feedbackList: List<FeedbackItem>,private val d
 
     override fun getItemCount() = feedbackList.size
 
-    class DoctorFeedbackViewHolder(private val binding: DfRecyclerRowBinding, private val doctorList : List<DoctorDTO>) : RecyclerView.ViewHolder(binding.root) {
+    class DoctorFeedbackViewHolder(private val binding: DfRecyclerRowBinding, private val doctorList : List<DoctorDTO>, private val userRole : String) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: DoctorFeedbackDTO) {
             val doctor = doctorList.find { it.id == data.doctorId }
             binding.doctorNameText.text = doctor?.fullName
             binding.commentText.text = data.comment
-            binding.dateText.text = data.createdAt
             binding.doctorRatingBar.rating = data.score.toFloat()
+            binding.scoreText.text = data.score.toString()
 
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")
+            val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+
+            val dateTime = LocalDateTime.parse(data.createdAt, inputFormatter)
+            val formattedDate = dateTime.format(outputFormatter)
+
+            binding.dateText.text = formattedDate
+
+            if (userRole == "Admin") {
+                binding.root.setOnClickListener {
+                    val action = AdminFragmentDirections.actionAdminFragmentToDoctorFeedbackDetail(data.id)
+                    it.findNavController().navigate(action)
+                }
+            }
         }
     }
 
-    class HospitalFeedbackViewHolder(private val binding: HfRecyclerRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    class HospitalFeedbackViewHolder(private val binding: HfRecyclerRowBinding, val userRole: String) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: HospitalFeedbackDTO) {
             binding.subjectText.text = data.subject
             binding.messageText.text = data.message
@@ -72,7 +90,21 @@ class FeedbackAdapter(private val feedbackList: List<FeedbackItem>,private val d
                 binding.answerText.text = data.answer
                 binding.statusText.text = "Yanıtlandı"
             }
-            binding.dateText.text = data.createdAt
+
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")
+            val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+
+            val dateTime = LocalDateTime.parse(data.createdAt, inputFormatter)
+            val formattedDate = dateTime.format(outputFormatter)
+
+            binding.dateText.text = formattedDate
+
+            if (userRole == "Admin") {
+                binding.root.setOnClickListener {
+                    val action = AdminFragmentDirections.actionAdminFragmentToHospitalFeedbackDetail(data.id)
+                    it.findNavController().navigate(action)
+                }
+            }
         }
     }
 }

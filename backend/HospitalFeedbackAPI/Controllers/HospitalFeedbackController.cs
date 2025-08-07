@@ -108,13 +108,13 @@ namespace HospitalFeedbackAPI.Controllers
         // PUT: api/HospitalFeedback/5/answer
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}/answer")]
-        public async Task<IActionResult> AnswerFeedback(int id, string answer)
+        public async Task<IActionResult> AnswerFeedback(int id, FeedbackAnswerDto answer)
         {
             var feedback = await _context.HospitalFeedbacks.FindAsync(id);
             if (feedback == null)
                 return NotFound();
 
-            feedback.Answer = answer;
+            feedback.Answer = answer.Answer;
             await _context.SaveChangesAsync();
 
             return NoContent();

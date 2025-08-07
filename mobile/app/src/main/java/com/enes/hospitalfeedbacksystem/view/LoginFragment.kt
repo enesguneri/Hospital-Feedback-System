@@ -68,8 +68,6 @@ class LoginFragment : Fragment() {
                         view.findNavController().navigate(action)
                     }
                 })
-                val action = LoginFragmentDirections.actionLoginFragmentToMyFeedbacksFragment()
-                view.findNavController().navigate(action)
             }
         })
 

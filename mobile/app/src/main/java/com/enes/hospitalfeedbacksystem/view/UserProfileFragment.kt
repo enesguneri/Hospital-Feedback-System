@@ -38,10 +38,14 @@ class UserProfileFragment : Fragment() {
         viewModel.userInfo.observe(viewLifecycleOwner) { currentUser ->
             if (currentUser != null) {
                 var role = currentUser.role
-                if (role == "Patient")
+                if (role == "Patient") {
                     role = "Hasta"
-                else if (role == "Admin")
+                    binding.adminLayout.visibility = View.GONE
+                }
+                else if (role == "Admin") {
                     role = "Yetkili"
+                    binding.adminLayout.visibility = View.VISIBLE
+                }
                 binding.userRole.text = role
                 binding.userEmail.text = currentUser.email
                 binding.userFullName.text = currentUser.fullName
@@ -49,6 +53,11 @@ class UserProfileFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "Kullanıcı bilgileri alınamadı.", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.adminLayout.setOnClickListener {
+            val action = UserProfileFragmentDirections.actionUserProfileFragmentToAdminFragment()
+            findNavController().navigate(action)
         }
 
         binding.logoutLayout.setOnClickListener {

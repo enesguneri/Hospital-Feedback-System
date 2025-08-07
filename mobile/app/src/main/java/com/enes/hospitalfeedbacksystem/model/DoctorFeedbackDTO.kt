@@ -1,5 +1,3 @@
 package com.enes.hospitalfeedbacksystem.model
 
-import java.time.LocalDateTime
-
-data class DoctorFeedbackDTO(val doctorId: Int, val score: Int, val comment: String?, val createdAt: String?)
+data class DoctorFeedbackDTO(val id : Int, val doctorId: Int, val score: Int, val comment: String?, val createdAt: String?)

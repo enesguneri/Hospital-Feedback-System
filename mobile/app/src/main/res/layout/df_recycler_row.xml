@@ -100,7 +100,8 @@
             android:layout_height="wrap_content"
             android:numStars="5"
             android:stepSize="1.0"
-            android:rating="0"/>
+            android:rating="0"
+            android:isIndicator="true"/>
 
         <!-- Comment Section (Only visible if comment exists) -->
         <LinearLayout

@@ -22,6 +22,7 @@ namespace HospitalFeedbackAPI.Controllers
             var feedbacks = await _context.DoctorFeedbacks.ToListAsync();
             var dtos = feedbacks.Select(f => new DoctorFeedbackDto
             {
+                Id = f.Id,
                 DoctorId = f.DoctorId,
                 Score = f.Score,
                 Comment = f.Comment,
@@ -42,6 +43,7 @@ namespace HospitalFeedbackAPI.Controllers
 
             var dto = new DoctorFeedbackDto
             {
+                Id = feedback.Id,
                 DoctorId = feedback.DoctorId,
                 Score = feedback.Score,
                 Comment = feedback.Comment,
@@ -61,6 +63,7 @@ namespace HospitalFeedbackAPI.Controllers
 
             var dtos = feedbacks.Select(f => new DoctorFeedbackDto
             {
+                Id = f.Id,
                 DoctorId = f.DoctorId,
                 Score = f.Score,
                 Comment = f.Comment,
@@ -92,6 +95,8 @@ namespace HospitalFeedbackAPI.Controllers
 
             _context.DoctorFeedbacks.Add(feedback);
             await _context.SaveChangesAsync();
+
+            request.Id = feedback.Id;
 
             return CreatedAtAction(nameof(GetById), new { id = feedback.Id }, request);
         }
@@ -145,6 +150,7 @@ namespace HospitalFeedbackAPI.Controllers
 
             var dtos = feedbacks.Select(f => new DoctorFeedbackDto
             {
+                Id = f.Id,
                 DoctorId = f.DoctorId,
                 Score = f.Score,
                 Comment = f.Comment,

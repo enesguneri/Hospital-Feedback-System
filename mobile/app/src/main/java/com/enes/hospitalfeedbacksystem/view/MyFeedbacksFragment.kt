@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.enes.hospitalfeedbacksystem.adapter.FeedbackAdapter
 import com.enes.hospitalfeedbacksystem.databinding.BottomSheetFeedbackMenuBinding
 import com.enes.hospitalfeedbacksystem.databinding.FragmentMyFeedbacksBinding
+import com.enes.hospitalfeedbacksystem.model.DoctorDTO
+import com.enes.hospitalfeedbacksystem.model.DoctorFeedbackDTO
 import com.enes.hospitalfeedbacksystem.model.FeedbackItem
+import com.enes.hospitalfeedbacksystem.model.HospitalFeedbackDTO
 import com.enes.hospitalfeedbacksystem.viewmodel.DoctorFeedbackViewModel
 import com.enes.hospitalfeedbacksystem.viewmodel.DoctorViewModel
 import com.enes.hospitalfeedbacksystem.viewmodel.HospitalFeedbackViewModel
@@ -51,37 +54,66 @@ class MyFeedbacksFragment : Fragment() {
             handleMenuClick(view)
         }
 
+        observeMyFeedbacks()
+
+    }
+
+    private fun observeMyFeedbacks() {
+        val feedbackList = mutableListOf<FeedbackItem>()
+
+        var hospitalFeedbacksLoaded = false
+        var doctorFeedbacksLoaded = false
+        var doctorListLoaded = false
+
+        var hospitalFeedbacks: List<HospitalFeedbackDTO>? = null
+        var doctorFeedbacks: List<DoctorFeedbackDTO>? = null
+        var doctorList: List<DoctorDTO>? = null
+
+        fun tryDisplayData() {
+            if (hospitalFeedbacksLoaded && doctorFeedbacksLoaded && doctorListLoaded) {
+                feedbackList.clear()
+
+                hospitalFeedbacks?.forEach {
+                    feedbackList.add(FeedbackItem.HospitalFeedback(it))
+                }
+
+                doctorFeedbacks?.forEach {
+                    feedbackList.add(FeedbackItem.DoctorFeedback(it))
+                }
+
+                if (feedbackList.isEmpty()) {
+                    binding.emptyStateLayout.visibility = View.VISIBLE
+                } else {
+                    binding.emptyStateLayout.visibility = View.GONE
+                    binding.feedbackRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                    binding.feedbackRecyclerView.adapter = FeedbackAdapter(feedbackList, doctorList!!, "Patient")
+                }
+            }
+        }
+
         hospitalFeedbackViewModel.getMyFeedbacks(requireContext())
         doctorFeedbackViewModel.getMyFeedbacks(requireContext())
         doctorViewModel.getDoctorList(requireContext())
 
         hospitalFeedbackViewModel.myFeedbacks.observe(viewLifecycleOwner) { feedbacks ->
-            if (feedbacks.isNotEmpty()) {
-                feedbacks.forEach {
-                    feedbackList.add(FeedbackItem.HospitalFeedback(it))
-                }
-            }
-            doctorFeedbackViewModel.myFeedbacks.observe(viewLifecycleOwner) { feedbacks2 ->
-                if (feedbacks2.isNotEmpty()) {
-                    feedbacks2.forEach {
-                        feedbackList.add(FeedbackItem.DoctorFeedback(it))
-                    }
-                }
-            }
-            if (feedbackList.isNotEmpty()){
-                binding.emptyStateLayout.visibility = View.GONE
-                doctorViewModel.doctorList.observe(viewLifecycleOwner) { doctors ->
-                    binding.emptyStateLayout.visibility = View.GONE
-                    binding.feedbackRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                    binding.feedbackRecyclerView.adapter = FeedbackAdapter(feedbackList, doctors)
-                }
-            }
+            hospitalFeedbacks = feedbacks
+            hospitalFeedbacksLoaded = true
+            tryDisplayData()
         }
 
+        doctorFeedbackViewModel.myFeedbacks.observe(viewLifecycleOwner) { feedbacks ->
+            doctorFeedbacks = feedbacks
+            doctorFeedbacksLoaded = true
+            tryDisplayData()
+        }
 
-
-
+        doctorViewModel.doctorList.observe(viewLifecycleOwner) { doctors ->
+            doctorList = doctors
+            doctorListLoaded = true
+            tryDisplayData()
+        }
     }
+
 
     private fun handleMenuClick(view: View) {
         val inflater = LayoutInflater.from(requireContext())

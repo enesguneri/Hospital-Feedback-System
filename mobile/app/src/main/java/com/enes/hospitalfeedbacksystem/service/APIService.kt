@@ -1,5 +1,6 @@
 package com.enes.hospitalfeedbacksystem.service
 
+import com.enes.hospitalfeedbacksystem.model.AnswerDTO
 import com.enes.hospitalfeedbacksystem.model.DoctorDTO
 import com.enes.hospitalfeedbacksystem.model.DoctorFeedbackDTO
 import com.enes.hospitalfeedbacksystem.model.HospitalFeedbackCreateDTO
@@ -13,6 +14,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface APIService {
 
@@ -29,10 +31,10 @@ interface APIService {
     suspend fun getCurrentUser(): UserDTO
 
     @GET("api/User/{id}")
-    suspend fun getUserById(id: Int): UserDTO
+    suspend fun getUserById(@Path("id")id: Int): UserDTO
 
     @GET("api/User/role/{role}")
-    suspend fun getUsersByRole(role: String): List<UserDTO>
+    suspend fun getUsersByRole(@Path("role") role: String): List<UserDTO>
 
     @POST("api/User/create-patient")
     suspend fun createPatient(@Body user: RegisterUserDTO): UserDTO
@@ -41,7 +43,7 @@ interface APIService {
     suspend fun createAdmin(@Body user: RegisterUserDTO): UserDTO
 
     @PUT("api/User/{id}")
-    suspend fun updateUser(@Body user: UserDTO): UserDTO
+    suspend fun updateUser(@Path("id") user: UserDTO): UserDTO
 
     @DELETE("api/User/{id}")
     suspend fun deleteUser(id: Int)
@@ -55,13 +57,13 @@ interface APIService {
     suspend fun getDoctors(): List<DoctorDTO>
 
     @GET("api/Doctor/{id}")
-    suspend fun getDoctorById(id: Int): DoctorDTO
+    suspend fun getDoctorById(@Path("id") id: Int): DoctorDTO
 
     @GET("api/Doctor/search")
     suspend fun searchDoctorsByName(name: String): List<DoctorDTO>
 
     @PUT("api/Doctor/{id}")
-    suspend fun updateDoctor(@Body doctor: DoctorDTO)
+    suspend fun updateDoctor(@Path("id") doctor: DoctorDTO)
 
     @DELETE("api/Doctor/{id}")
     suspend fun deleteDoctor(id: Int)
@@ -72,7 +74,7 @@ interface APIService {
     suspend fun createDoctorFeedback(@Body feedback: DoctorFeedbackDTO): DoctorFeedbackDTO
 
     @PUT("api/DoctorFeedback/{id}")
-    suspend fun updateDoctorFeedback(@Body id : Int, @Body feedback: DoctorFeedbackDTO)
+    suspend fun updateDoctorFeedback(@Path("id") id : Int, @Body feedback: DoctorFeedbackDTO)
 
     @GET("api/DoctorFeedback/my-feedback")
     suspend fun getMyDoctorFeedbacks(): List<DoctorFeedbackDTO>
@@ -81,13 +83,13 @@ interface APIService {
     suspend fun getAllDoctorFeedbacks(): List<DoctorFeedbackDTO>
 
     @GET("api/DoctorFeedback/doctor/{doctorId}")
-    suspend fun getDoctorsFeedbacks(doctorId: Int): List<DoctorFeedbackDTO>
+    suspend fun getDoctorsFeedbacks(@Path("doctorId") doctorId: Int): List<DoctorFeedbackDTO>
 
     @GET("api/DoctorFeedback/{id}")
-    suspend fun getDoctorFeedbackById(id: Int): DoctorFeedbackDTO
+    suspend fun getDoctorFeedbackById(@Path("id") id: Int): DoctorFeedbackDTO
 
     @DELETE("api/DoctorFeedback/{id}")
-    suspend fun deleteDoctorFeedback(id: Int)
+    suspend fun deleteDoctorFeedback(@Path("id") id: Int)
 
 
     //Hospital Feedback Endpoints
@@ -101,14 +103,14 @@ interface APIService {
     suspend fun getMyHospitalFeedbacks(): List<HospitalFeedbackDTO>
 
     @GET("api/HospitalFeedback/{id}")
-    suspend fun getHospitalFeedbackById(id: Int): HospitalFeedbackDTO
+    suspend fun getHospitalFeedbackById(@Path("id") id: Int): HospitalFeedbackDTO
 
     @PUT("api/HospitalFeedback/{id}")
-    suspend fun updateHospitalFeedback(@Body id : Int, @Body feedback: HospitalFeedbackDTO)
+    suspend fun updateHospitalFeedback(@Path("id") id : Int, @Body feedback: HospitalFeedbackDTO)
 
     @PUT("api/HospitalFeedback/{id}/answer")
-    suspend fun answerHospitalFeedback(@Body id : Int, @Body answer: String)
+    suspend fun answerHospitalFeedback(@Path("id") id : Int, @Body answer: AnswerDTO)
 
     @DELETE("api/HospitalFeedback/{id}")
-    suspend fun deleteHospitalFeedback(id: Int)
+    suspend fun deleteHospitalFeedback(@Path("id") id: Int)
 }

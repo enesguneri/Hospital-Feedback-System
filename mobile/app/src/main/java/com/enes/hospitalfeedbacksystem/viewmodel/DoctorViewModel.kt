@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 
 class DoctorViewModel : ViewModel() {
     val doctorList = MutableLiveData<List<DoctorDTO>>()
+    val doctor = MutableLiveData<DoctorDTO>()
     val errorMessage = MutableLiveData<String>()
 
     fun getDoctorList(context: Context) {
@@ -19,7 +20,18 @@ class DoctorViewModel : ViewModel() {
                 doctorList.postValue(doctors)
             }
         } catch (e : Exception) {
-            errorMessage.postValue("Hata oluştu: ${e.localizedMessage}")
+            errorMessage.postValue("${e.localizedMessage}")
+        }
+    }
+
+    fun getDoctorById(context: Context, id: Int) {
+        try {
+            viewModelScope.launch {
+                val doctorData = APIClient.getAuthApiService(context).getDoctorById(id)
+                doctor.postValue(doctorData)
+            }
+        } catch (e : Exception) {
+            errorMessage.postValue("${e.localizedMessage}")
         }
     }
 }

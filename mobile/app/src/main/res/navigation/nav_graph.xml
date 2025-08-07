@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_userProfileFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_adminFragment"
+            app:destination="@id/adminFragment" />
     </fragment>
     <fragment
         android:id="@+id/adminFragment"
@@ -76,5 +79,33 @@
         <action
             android:id="@+id/action_adminFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_doctorFeedbackDetail"
+            app:destination="@id/doctorFeedbackDetailFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_hospitalFeedbackDetail"
+            app:destination="@id/hospitalFeedbackDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/doctorFeedbackDetailFragment"
+        android:name="com.enes.hospitalfeedbacksystem.view.DoctorFeedbackDetailFragment"
+        android:label="DoctorFeedbackDetail" >
+        <action
+            android:id="@+id/action_doctorFeedbackDetail_to_adminFragment"
+            app:destination="@id/adminFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/hospitalFeedbackDetailFragment"
+        android:name="com.enes.hospitalfeedbacksystem.view.HospitalFeedbackDetailFragment"
+        android:label="HospitalFeedbackDetail" >
+        <action
+            android:id="@+id/action_hospitalFeedbackDetail_to_adminFragment"
+            app:destination="@id/adminFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 </navigation>

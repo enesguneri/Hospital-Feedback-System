@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.enes.hospitalfeedbacksystem.R
 import com.enes.hospitalfeedbacksystem.adapter.FeedbackAdapter
 import com.enes.hospitalfeedbacksystem.databinding.FragmentAdminBinding
+import com.enes.hospitalfeedbacksystem.model.DoctorDTO
+import com.enes.hospitalfeedbacksystem.model.DoctorFeedbackDTO
 import com.enes.hospitalfeedbacksystem.model.FeedbackItem
+import com.enes.hospitalfeedbacksystem.model.HospitalFeedbackDTO
 import com.enes.hospitalfeedbacksystem.viewmodel.DoctorFeedbackViewModel
 import com.enes.hospitalfeedbacksystem.viewmodel.DoctorViewModel
 import com.enes.hospitalfeedbacksystem.viewmodel.HospitalFeedbackViewModel
@@ -43,32 +46,7 @@ class AdminFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        hospitalFeedbackViewModel.getAllFeedbacks(requireContext())
-        doctorFeedbackViewModel.getAllFeedbacks(requireContext())
-        doctorViewModel.getDoctorList(requireContext())
-
-        hospitalFeedbackViewModel.allFeedbacks.observe(viewLifecycleOwner) { feedbacks ->
-            if (feedbacks.isNotEmpty()) {
-                feedbacks.forEach {
-                    feedbackList.add(FeedbackItem.HospitalFeedback(it))
-                }
-            }
-            doctorFeedbackViewModel.allFeedbacks.observe(viewLifecycleOwner) { feedbacks2 ->
-                if (feedbacks2.isNotEmpty()) {
-                    feedbacks2.forEach {
-                        feedbackList.add(FeedbackItem.DoctorFeedback(it))
-                    }
-                }
-            }
-            if (feedbackList.isNotEmpty()){
-                binding.emptyStateLayout.visibility = View.GONE
-                doctorViewModel.doctorList.observe(viewLifecycleOwner) { doctors ->
-                    binding.emptyStateLayout.visibility = View.GONE
-                    binding.feedbackRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                    binding.feedbackRecyclerView.adapter = FeedbackAdapter(feedbackList, doctors)
-                }
-            }
-        }
+        observeAllData()
 
         binding.menuButton.setOnClickListener {
             val popupMenu = PopupMenu(requireContext(), binding.menuButton)
@@ -83,8 +61,66 @@ class AdminFragment : Fragment() {
                     else -> false
                 }
             }
+            popupMenu.show()
         }
     }
+
+    private fun observeAllData() {
+        val feedbackList = mutableListOf<FeedbackItem>()
+        var hospitalFeedbacksLoaded = false
+        var doctorFeedbacksLoaded = false
+        var doctorListLoaded = false
+
+        var hospitalFeedbacks: List<HospitalFeedbackDTO>? = null
+        var doctorFeedbacks: List<DoctorFeedbackDTO>? = null
+        var doctorList: List<DoctorDTO>? = null
+
+        fun tryDisplayData() {
+            if (hospitalFeedbacksLoaded && doctorFeedbacksLoaded && doctorListLoaded) {
+                feedbackList.clear()
+
+                hospitalFeedbacks?.forEach {
+                    feedbackList.add(FeedbackItem.HospitalFeedback(it))
+                }
+
+                doctorFeedbacks?.forEach {
+                    feedbackList.add(FeedbackItem.DoctorFeedback(it))
+                }
+
+                if (feedbackList.isEmpty()) {
+                    binding.emptyStateLayout.visibility = View.VISIBLE
+                } else {
+                    binding.emptyStateLayout.visibility = View.GONE
+                    binding.feedbackRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                    binding.feedbackRecyclerView.adapter = FeedbackAdapter(feedbackList, doctorList!!, "Admin")
+                }
+            }
+        }
+
+        hospitalFeedbackViewModel.getAllFeedbacks(requireContext())
+        doctorFeedbackViewModel.getAllFeedbacks(requireContext())
+        doctorViewModel.getDoctorList(requireContext())
+
+        hospitalFeedbackViewModel.allFeedbacks.observe(viewLifecycleOwner) { feedbacks ->
+            hospitalFeedbacks = feedbacks
+            hospitalFeedbacksLoaded = true
+            tryDisplayData()
+        }
+
+        doctorFeedbackViewModel.allFeedbacks.observe(viewLifecycleOwner) { feedbacks ->
+            doctorFeedbacks = feedbacks
+            doctorFeedbacksLoaded = true
+            tryDisplayData()
+        }
+
+        doctorViewModel.doctorList.observe(viewLifecycleOwner) { doctors ->
+            doctorList = doctors
+            doctorListLoaded = true
+            tryDisplayData()
+        }
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

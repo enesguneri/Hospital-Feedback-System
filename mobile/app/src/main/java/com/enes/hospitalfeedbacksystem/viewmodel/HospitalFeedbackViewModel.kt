@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.enes.hospitalfeedbacksystem.model.AnswerDTO
 import com.enes.hospitalfeedbacksystem.model.HospitalFeedbackCreateDTO
 import com.enes.hospitalfeedbacksystem.model.HospitalFeedbackDTO
 import com.enes.hospitalfeedbacksystem.service.APIClient
@@ -14,8 +15,13 @@ class HospitalFeedbackViewModel : ViewModel() {
     val myFeedbacks = MutableLiveData<List<HospitalFeedbackDTO>>() // For users
     val errorMessage = MutableLiveData<String>()
     val submitResult = MutableLiveData<HospitalFeedbackDTO>()
+    val result = MutableLiveData<HospitalFeedbackDTO>()
+    val isAnswerSent = MutableLiveData<Boolean>()
+    val isFeedbackDeleted = MutableLiveData<Boolean>()
 
     fun getAllFeedbacks(context: Context) {
+        allFeedbacks.value = emptyList() // Clear previous data
+        errorMessage.value = "" // Clear previous error message
         viewModelScope.launch {
             try {
                 val feedbacks = APIClient.getAuthApiService(context).getAllHospitalFeedbacks()
@@ -27,6 +33,8 @@ class HospitalFeedbackViewModel : ViewModel() {
     }
 
     fun getMyFeedbacks(context: Context) {
+        myFeedbacks.value = emptyList() // Clear previous data
+        errorMessage.value = "" // Clear previous error message
         viewModelScope.launch {
             try {
                 val feedbacks = APIClient.getAuthApiService(context).getMyHospitalFeedbacks()
@@ -53,6 +61,7 @@ class HospitalFeedbackViewModel : ViewModel() {
             try {
                 APIClient.getAuthApiService(context).deleteHospitalFeedback(feedbackId)
                 getMyFeedbacks(context)
+                isFeedbackDeleted.postValue(true)
             } catch (e : Exception){
                 errorMessage.postValue("Hata oluştu: ${e.localizedMessage}")
             }
@@ -73,8 +82,10 @@ class HospitalFeedbackViewModel : ViewModel() {
     fun answerFeedback(context: Context, feedbackId: Int, answer: String) {
         viewModelScope.launch {
             try {
-                APIClient.getAuthApiService(context).answerHospitalFeedback(feedbackId, answer)
+                val answerDto = AnswerDTO(answer)
+                APIClient.getAuthApiService(context).answerHospitalFeedback(feedbackId, answerDto)
                 getAllFeedbacks(context) // Refresh all feedbacks after answering
+                isAnswerSent.postValue(true)
             } catch (e : Exception){
                 errorMessage.postValue("Hata oluştu: ${e.localizedMessage}")
             }
@@ -85,9 +96,9 @@ class HospitalFeedbackViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val feedback = APIClient.getAuthApiService(context).getHospitalFeedbackById(feedbackId)
-                submitResult.postValue(feedback)
+                result.postValue(feedback)
             } catch (e : Exception){
-                errorMessage.postValue("Hata oluştu: ${e.localizedMessage}")
+                errorMessage.postValue("${e.localizedMessage}")
             }
         }
     }

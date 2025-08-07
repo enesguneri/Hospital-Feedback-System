@@ -71,7 +71,7 @@ class CreateDoctorFeedbackFragment : Fragment() {
 
                 if (selectedDoctor != null) {
                     val feedback =
-                        DoctorFeedbackDTO(selectedDoctor.id, rating, comment, LocalDateTime.now().toString())
+                        DoctorFeedbackDTO(0,selectedDoctor.id, rating, comment, LocalDateTime.now().toString())
                     viewModel.submitFeedback(requireContext(), feedback)
                 }
             }

@@ -26,7 +26,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(binding.fragmentContainerView)
         binding.bottomNavigationView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.loginFragment || destination.id == R.id.registerFragment || destination.id == R.id.createDoctorFeedbackFragment || destination.id == R.id.createHospitalFeedbackFragment || destination.id == R.id.adminFragment ) {
+            if (destination.id == R.id.loginFragment || destination.id == R.id.registerFragment ||
+                destination.id == R.id.createDoctorFeedbackFragment || destination.id == R.id.createHospitalFeedbackFragment ||
+                destination.id == R.id.adminFragment || destination.id == R.id.doctorFeedbackDetailFragment
+                || destination.id == R.id.hospitalFeedbackDetailFragment) {
                 binding.bottomNavigationView.visibility = View.GONE
             } else {
                 binding.bottomNavigationView.visibility = View.VISIBLE

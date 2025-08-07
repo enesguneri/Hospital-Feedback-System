@@ -14,8 +14,11 @@ class DoctorFeedbackViewModel : ViewModel() {
     val myFeedbacks = MutableLiveData<List<DoctorFeedbackDTO>>()
     val errorMessage = MutableLiveData<String>()
     val submitResult = MutableLiveData<DoctorFeedbackDTO>()
+    val isDeleted = MutableLiveData<Boolean>()
 
     fun getAllFeedbacks(context: Context) {
+        allFeedbacks.value = emptyList() // Clear previous data
+        errorMessage.value = "" // Clear previous error message
         viewModelScope.launch {
             try {
                 val feedbacks = APIClient.getAuthApiService(context).getAllDoctorFeedbacks()
@@ -27,6 +30,8 @@ class DoctorFeedbackViewModel : ViewModel() {
     }
 
     fun getMyFeedbacks(context: Context) {
+        myFeedbacks.value = emptyList() // Clear previous data
+        errorMessage.value = "" // Clear previous error message
         viewModelScope.launch {
             try {
                 val feedbacks = APIClient.getAuthApiService(context).getMyDoctorFeedbacks()
@@ -97,6 +102,7 @@ class DoctorFeedbackViewModel : ViewModel() {
             try {
                 APIClient.getAuthApiService(context).deleteDoctorFeedback(id)
                 getMyFeedbacks(context)
+                isDeleted.postValue(true)
             } catch (e : Exception){
                 errorMessage.postValue("Hata oluştu: ${e.localizedMessage}")
             }
