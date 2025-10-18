@@ -12,6 +12,8 @@ This system includes a .NET 8.0 Web API backend and a Kotlin Android mobile app 
 
 
 
+
+
 Features
 
 
@@ -36,6 +38,8 @@ Feedback creation, retrieval, updating, and deletion endpoints
 
 
 
+
+
 Mobile (Kotlin + MVVM)
 
 Developed with Kotlin and Android Jetpack
@@ -54,27 +58,29 @@ Role-specific interfaces (Admin, Patient)
 
 
 
+
+
 Tech Stack
 
-Layer		Technology
+Layer - Technology
 
 
 
-Backend		ASP.NET Core 8.0
+Backend - ASP.NET Core 8.0
 
-Database	Oracle (Docker)
+Database - Oracle (Docker)
 
-Authentication	JWT (JSON Web Token)
+Authentication - JWT (JSON Web Token)
 
-ORM		Entity Framework Core
+ORM - Entity Framework Core
 
-Mobile App	Kotlin, Android Studio
+Mobile App - Kotlin, Android Studio
 
-Architecture	MVVM (Model–View–ViewModel)
+Architecture - MVVM (Model–View–ViewModel)
 
-Networking	Retrofit + Gson Converter
+Networking - Retrofit + Gson Converter
 
-UI		XML layouts, RecyclerView
+UI - XML layouts, RecyclerView
 
-Design Tool	Figma
+Design Tool - Figma
 
