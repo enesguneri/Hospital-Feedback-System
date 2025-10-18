@@ -49,7 +49,7 @@ class CreateDoctorFeedbackFragment : Fragment() {
 
         doctorViewModel.doctorList.observe(viewLifecycleOwner) { doctors ->
             if (doctors.isNotEmpty()) {
-                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, doctors.map { it.fullName })
+                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, doctors.map { "${it.title} Dr. ${it.fullName} - ${it.department}" })
                 binding.doctorAutoComplete.setAdapter(adapter)
             }
         }
@@ -67,7 +67,7 @@ class CreateDoctorFeedbackFragment : Fragment() {
                 val comment = binding.commentEditText.text.toString()
 
                 val selectedDoctor =
-                    doctorViewModel.doctorList.value?.find { it.fullName == selectedDoctorName }
+                    doctorViewModel.doctorList.value?.find { "${it.title} Dr. ${it.fullName} - ${it.department}" == selectedDoctorName }
 
                 if (selectedDoctor != null) {
                     val feedback =

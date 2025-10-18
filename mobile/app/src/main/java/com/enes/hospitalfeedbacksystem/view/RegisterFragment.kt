@@ -71,6 +71,10 @@ class RegisterFragment : Fragment() {
         viewModel.registerError.observe(viewLifecycleOwner) { error ->
             Toast.makeText(requireContext(), "Kayıt başarısız: $error", Toast.LENGTH_SHORT).show()
         }
+
+        binding.loginText.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 
     override fun onDestroyView() {
