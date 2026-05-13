@@ -91,11 +91,18 @@ class FeedbackAdapter(private val feedbackList: List<FeedbackItem>,private val d
                 binding.statusText.text = "Yanıtlandı"
             }
 
-            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")
-            val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+            val formattedDate = data.createdAt?.let {
+                try {
+                    // ISO_DATE_TIME hem milisaniyeli hem milisaniyesiz formatları otomatik tanır
+                    val dateTime = LocalDateTime.parse(it, DateTimeFormatter.ISO_DATE_TIME)
+                    val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+                    dateTime.format(outputFormatter)
+                } catch (e: Exception) {
+                    it // Hata durumunda ham veriyi göster veya boş bırak
+                }
+            } ?: "" // Veri null ise boş string kullan
 
-            val dateTime = LocalDateTime.parse(data.createdAt, inputFormatter)
-            val formattedDate = dateTime.format(outputFormatter)
+            binding.dateText.text = formattedDate
 
             binding.dateText.text = formattedDate
 
